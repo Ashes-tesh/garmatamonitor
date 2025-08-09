@@ -1,3 +1,20 @@
+from flask import Flask
+from threading import Thread
+import os
+
+# Створюємо мінімальний веб-сервер
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "🟢 Bot is running!"
+
+def run_web_server():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
+
+# Запускаємо веб-сервер у фоні
+Thread(target=run_web_server).start()
 # ========== ФІКС ДЛЯ COLLECTIONS ==========
 import collections
 import collections.abc
@@ -220,4 +237,5 @@ if __name__ == "__main__":
     # Тут ваш код тестування підключення
     # Якщо тест пройдено:
     print("✅ Тест пройдено успішно! Запускаємо бота...")
+
     main()
