@@ -170,7 +170,7 @@ async def server_command(update: Update, context: CallbackContext):
             # Форматуємо рядок гравця
             message += (
                 f"• `{player_name}`: "
-                f"🕒 {player_time} | "
+                f"🕒 {player_time} \\| "
                 f"{player.get('score', 0)} вбивств\n"
             )
         
@@ -252,3 +252,4 @@ if __name__ == "__main__":
 
     # Запускаємо бота в основному потоці
     run_bot()
+
