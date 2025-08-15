@@ -19,8 +19,6 @@ def run_web_server():
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
 
-# Запускаємо веб-сервер у фоні
-Thread(target=run_web_server).start()
 # ========== ФІКС ДЛЯ COLLECTIONS ==========
 import collections
 import collections.abc
@@ -28,7 +26,7 @@ import collections.abc
 if not hasattr(collections, 'Mapping'):
     collections.Mapping = collections.abc.Mapping
 if not hasattr(collections, 'Sequence'):
-    collections.Sequence = collections.abc.Squence
+    collections.Sequence = collections.abc.Sequence
 if not hasattr(collections, 'Iterable'):
     collections.Iterable = collections.abc.Iterable
 # ==========================================
@@ -144,7 +142,7 @@ async def server_command(update: Update, context: CallbackContext):
         data = get_server_info()
         
         if data['status'] == 'offline':
-            await update.message.reply_text("🔴 Сервер не відповідає. Можливо, він вимкнений або недоступний.")
+            await update.message.reply_text("🔴 Сервер не відповідає. Можливо, вір вимкнений або недоступний.")
             return
             
         if data['status'] == 'error':
@@ -184,7 +182,7 @@ async def server_command(update: Update, context: CallbackContext):
             chat_id=update.effective_chat.id,
             photo=data['map_image'],
             caption=message,
-            parse_mode='MarkdownV2'  # Змінили на MarkdownV2
+            parse_mode='MarkdownV2'
         )
         
     except Exception as e:
@@ -224,14 +222,14 @@ async def button_handler(update: Update, context: CallbackContext):
         except Exception as e:
             await query.edit_message_text(f"🚨 Помилка оновлення: {str(e)}")
 
-def main():
+def run_bot():
     # Створюємо додаток за допомогою білдера
     application = ApplicationBuilder().token(CONFIG['bot_token']).build()
     
     # Додаємо обробники команд
     application.add_handler(CommandHandler("info", server_info))
     application.add_handler(CommandHandler("s1", server_info))
-    application.add_handler(CommandHandler("server", server_command))  # Нова команда
+    application.add_handler(CommandHandler("server", server_command))
     
     # Обробник для інтерактивних кнопок
     application.add_handler(CallbackQueryHandler(button_handler))
@@ -244,6 +242,13 @@ if __name__ == "__main__":
     print("🧪 Тестування підключення до сервера CS...")
     # Тут ваш код тестування підключення
     # Якщо тест пройдено:
-    print("✅ Тест пройдено успішно! Запускаємо бота...")
+    print("✅ Тест пройдено успішно! Запускаємо сервіси...")
 
-    main()
+    # Запускаємо веб-сервер у окремому потоці
+    web_thread = Thread(target=run_web_server)
+    web_thread.daemon = True
+    web_thread.start()
+    print("🌐 Веб-сервер запущений у фоновому режимі")
+
+    # Запускаємо бота в основному потоці
+    run_bot()
