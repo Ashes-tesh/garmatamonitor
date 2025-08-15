@@ -1,6 +1,12 @@
 from flask import Flask
 from threading import Thread
 import os
+import re
+
+# Допоміжна функція для екранування спецсимволів MarkdownV2
+def escape_markdown(text):
+    escape_chars = '_*[]()~`>#+-=|{}.!'
+    return re.sub(f'([{re.escape(escape_chars)}])', r'\\\1', str(text))
 
 # Створюємо мінімальний веб-сервер
 app = Flask('')
@@ -22,7 +28,7 @@ import collections.abc
 if not hasattr(collections, 'Mapping'):
     collections.Mapping = collections.abc.Mapping
 if not hasattr(collections, 'Sequence'):
-    collections.Sequence = collections.abc.Sequence
+    collections.Sequence = collections.abc.Squence
 if not hasattr(collections, 'Iterable'):
     collections.Iterable = collections.abc.Iterable
 # ==========================================
@@ -33,6 +39,7 @@ from valve.source.a2s import ServerQuerier, NoResponseError
 import time
 import asyncio
 from config import CONFIG
+from datetime import datetime
 
 # Посилання для GARMATA UA
 STATS_URL = "https://garmata-ua.fun/stats"
@@ -95,7 +102,6 @@ async def server_info(update: Update, context: CallbackContext):
             return
 
          # Отримуємо поточний час для відображення
-        from datetime import datetime
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # Формуємо повідомлення
@@ -106,9 +112,12 @@ async def server_info(update: Update, context: CallbackContext):
             f"🔗 [Статистика]({STATS_URL}) | [Магазин]({SHOP_URL})\n"
         )
         
+        # Додаємо час останнього оновлення
+        message += f"\n🕒 *Останнє оновлення:* {current_time}"
 
         # Додаємо кнопки
         keyboard = [
+            [InlineKeyboardButton("🔄 Оновити", callback_data='refresh_info')],
             [
                 InlineKeyboardButton("📊 Статистика", url=STATS_URL),
                 InlineKeyboardButton("🛒 Магазин", url=SHOP_URL)
@@ -143,13 +152,12 @@ async def server_command(update: Update, context: CallbackContext):
             return
 
         # Отримуємо поточний час для відображення
-        from datetime import datetime
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # Формуємо повідомлення для /server
         message = (
-            f"🎮 *{data['server_name']}*\n"
-            f"🗺️ Мапа: `{data['map']}`\n"
+            f"🎮 *{escape_markdown(data['server_name'])}*\n"
+            f"🗺️ Мапа: `{escape_markdown(data['map'])}`\n"
             f"👥 *Список гравців:*\n"
         )
         
@@ -158,21 +166,25 @@ async def server_command(update: Update, context: CallbackContext):
             # Конвертуємо час гравця в хвилини:секунди
             player_time = time.strftime("%M:%S", time.gmtime(player.get('duration', 0)))
             
+            # Екрануємо спецсимволи в імені гравця
+            player_name = escape_markdown(player['name'])
+            
             # Форматуємо рядок гравця
             message += (
-                f"• `{player['name']}`: "
+                f"• `{player_name}`: "
                 f"🕒 {player_time} | "
-                f" {player.get('score', 0)} вбивств\n"
+                f"{player.get('score', 0)} вбивств\n"
             )
         
-
+        # Додаємо час останнього оновлення
+        message += f"\n🕒 *Останнє оновлення:* {escape_markdown(current_time)}"
 
         # Відправляємо фото з описом
         await context.bot.send_photo(
             chat_id=update.effective_chat.id,
             photo=data['map_image'],
             caption=message,
-            parse_mode='Markdown'
+            parse_mode='MarkdownV2'  # Змінили на MarkdownV2
         )
         
     except Exception as e:
@@ -235,4 +247,3 @@ if __name__ == "__main__":
     print("✅ Тест пройдено успішно! Запускаємо бота...")
 
     main()
-
