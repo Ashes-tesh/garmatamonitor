@@ -106,12 +106,9 @@ async def server_info(update: Update, context: CallbackContext):
             f"🔗 [Статистика]({STATS_URL}) | [Магазин]({SHOP_URL})\n"
         )
         
-        # Додаємо час останнього оновлення
-        message += f"\n🕒 *Останнє оновлення:* {current_time}"
 
         # Додаємо кнопки
         keyboard = [
-            [InlineKeyboardButton("🔄 Оновити", callback_data='refresh_info')],
             [
                 InlineKeyboardButton("📊 Статистика", url=STATS_URL),
                 InlineKeyboardButton("🛒 Магазин", url=SHOP_URL)
@@ -168,8 +165,7 @@ async def server_command(update: Update, context: CallbackContext):
                 f" {player.get('score', 0)} вбивств\n"
             )
         
-        # Додаємо час останнього оновлення
-        message += f"\n🕒 *Останнє оновлення:* {current_time}"
+
 
         # Відправляємо фото з описом
         await context.bot.send_photo(
@@ -239,3 +235,4 @@ if __name__ == "__main__":
     print("✅ Тест пройдено успішно! Запускаємо бота...")
 
     main()
+
