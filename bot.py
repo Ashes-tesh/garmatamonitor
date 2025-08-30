@@ -40,13 +40,13 @@ from config import CONFIG
 from datetime import datetime
 
 # Посилання для GARMATA UA
-STATS_URL = "https://garmata-ua.fun/stats"
-SHOP_URL = "https://garmata-ua.fun/store"
-WEBSITE_URL = "https://garmata-ua.fun"
+STATS_URL = "https://royal-arena.fun/stats"
+SHOP_URL = "https://royal-arena.fun/store"
+WEBSITE_URL = "https://royal-arena.fun"
 
 # Словник з URL зображень для карт
 MAP_IMAGES = {
-    "default": "https://garmata-ua.fun/templates/standart/img/photo_20250809_005030.jpg"
+    "default": "https://royal-arena.fun/templates/standart/img/tgbotarena.jpg"
 }
 
 def get_server_info():
@@ -76,7 +76,7 @@ def get_server_info():
                 'map_image': MAP_IMAGES.get(info.get('map', ''), MAP_IMAGES['default']),
                 'players': f"{player_count}/{max_players}",
                 'game_duration': game_duration,
-                'server_name': "GARMATA UA",
+                'server_name': "Royal Arena",
                 'players_list': players_list,
                 'player_count': player_count,
                 'max_players': max_players
@@ -203,7 +203,7 @@ async def button_handler(update: Update, context: CallbackContext):
             # Формуємо новий текст
             new_caption = (
                 f"🔄 *Оновлено!*\n"
-                f"🎮 GARMATA UA\n"
+                f"🎮 Royal Arena\n"
                 f"📍 Карта: `{data['map']}`\n"
                 f"⏱ Час гри: `{data['game_duration']}`\n"
                 f"👥 Гравці: `{data['players']}`\n\n"
@@ -235,7 +235,7 @@ def run_bot():
     application.add_handler(CallbackQueryHandler(button_handler))
     
     # Запускаємо бота
-    print("🤖 Бот GARMATA UA запущений! Для зупинки натисніть Ctrl+C")
+    print("🤖 Бот Royal Arena запущений! Для зупинки натисніть Ctrl+C")
     application.run_polling()
 
 if __name__ == "__main__":
@@ -252,4 +252,5 @@ if __name__ == "__main__":
 
     # Запускаємо бота в основному потоці
     run_bot()
+
 
