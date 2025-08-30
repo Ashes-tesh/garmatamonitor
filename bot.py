@@ -142,7 +142,7 @@ async def server_command(update: Update, context: CallbackContext):
         data = get_server_info()
         
         if data['status'] == 'offline':
-            await update.message.reply_text("🔴 Сервер не відповідає. Можливо, вір вимкнений або недоступний.")
+            await update.message.reply_text("🔴 Сервер не відповідає. Можливо, він вимкнений або недоступний.")
             return
             
         if data['status'] == 'error':
@@ -252,5 +252,6 @@ if __name__ == "__main__":
 
     # Запускаємо бота в основному потоці
     run_bot()
+
 
 
