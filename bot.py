@@ -166,7 +166,7 @@ async def send_server_info(update: Update, context: CallbackContext, server_type
         # Формуємо повідомлення
         message = (
             f"🎮 *{data['server_name']}{server_name_suffix}*\n"
-            f"📍 Карта: `{data['map']}`\n"
+            f"🗺️ Мапа: `{data['map']}`\n"
             f"👥 Гравці: `{data['players']}`\n"
         )
 
@@ -245,7 +245,7 @@ async def button_handler(update: Update, context: CallbackContext):
             new_caption = (
                 f"🔄 *Оновлено!*\n"
                 f"🎮 Royal Arena\n"
-                f"📍 Карта: `{data['map']}`\n"
+                f"🗺️ Мапа: `{data['map']}`\n"
                 f"⏱ Час гри: `{data['game_duration']}`\n"
                 f"👥 Гравці: `{data['players']}`"
             )
@@ -293,3 +293,4 @@ if __name__ == "__main__":
 
     # Запускаємо бота в основному потоці
     run_bot()
+
