@@ -46,7 +46,7 @@ WEBSITE_URL = "https://royal-arena.fun"
 
 # Словник з URL зображень для карт
 MAP_IMAGES = {
-    "default": "https://royal-arena.fun/templates/standart/img/tgbotarena.jpg"
+    "default": "https://royal-arena.fun/templates/standart/img/IMG_3648.JPG"
 }
 
 def get_server_info():
@@ -252,6 +252,7 @@ if __name__ == "__main__":
 
     # Запускаємо бота в основному потоці
     run_bot()
+
 
 
 
